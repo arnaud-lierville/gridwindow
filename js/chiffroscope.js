@@ -169,61 +169,48 @@ var html =  '<nav class="navbar fixed-bottom navbar-light bg-light">' +
             '</nav>' +
             '<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">' +
 			'<div class="container-fluid">' +
-			  '<a class="navbar-brand" href="https://chiffroscope.blogs.laclasse.com" target="_blank">Chiffroscope</a>' +
+			  '<a class="navbar-brand" href="http://conifere.be/Jeux2019/Jeux.html" target="_blank">Grid window</a>' +
 			  '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">' +
 				'<span class="navbar-toggler-icon"></span>' +
 			  '</button>' +
 			  '<div class="collapse navbar-collapse" id="navbarNav">' +
 				'<ul class="navbar-nav">' +
 
+
 					'<li class="nav-item">' +
-						'<div class="btn-group">' +
-							'<button class="btn btn-outline-info" data-toggle="tooltip" data-placement="bottom" title="Moins de colonnes" id="minusButton">' +
-									'<i class="fa-solid fa-minus"></i>' +
-							'</button>' +
-							'<button class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Tirage au hasard d\'une unité de numération" id="unityButton">' +
-								'<i class="fa-solid fa-coins"></i>' +
-							'</button>' +
-							'<button class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Tirage au hasard d\'un nombre" id="numberButton">' +
-								'<i class="fa-solid fa-hand-sparkles"></i>' +
-							'</button>' +
-							'<button class="btn btn-outline-danger" data-toggle="tooltip" data-placement="bottom" title="Plus de colonnes" id="plusButton">' +
-								'<i class="fa-solid fa-plus"></i>' +
-							'</button>' +
+						'<div class="form-check form-switch custom-switch" data-toggle="tooltip" data-placement="bottom" title="Colorie les multiples des deux entiers">' +
+							'<input id="showColorSwitch" class="form-check-input" type="checkbox" role="switch" style="transform: scale(1.8);">' +
+							'<label class="form-check-label" style="padding-left: 13px;">Couleur</label>' +
 						'</div>' +
 					'</li>' +
 
-					'<li class="nav-item">' +
-						'<div class="form-check form-switch custom-switch" data-toggle="tooltip" data-placement="bottom" title="La carte générée est retournée">' +
-							'<input id="showNumberSwitch" class="form-check-input" type="checkbox" role="switch" style="transform: scale(1.8);">' +
-							'<label class="form-check-label" style="padding-left: 20px;">Carte retournée</label>' +
-						'</div>' +
-					'</li>' +
-
-					'<li class="nav-item">' +
-						'<select class="form-select" id="unityLevel">' +
-							'<option value="1" selected>Jusqu\'au milliers</option>' +
-							'<option value="2">Jusqu\'au millions</option>' +
-							'<option value="3">Décimaux</option>' +
-						'</select>' +
-					'</li>' +
+                    '<li class="nav-item">' +
+                    '<div class="form-check form-switch custom-switch" data-toggle="tooltip" data-placement="bottom" title="Peupler la grille">' +
+                        '<input id="showNumberSwitch" class="form-check-input" type="checkbox" role="switch" style="transform: scale(1.8);">' +
+                        '<label class="form-check-label" style="padding-left: 13px;">Peupler</label>' +
+                    '</div>' +
+                '</li>' +
 
 					'<li class="nav-item">' +
 						'<select class="form-select" id="level">' +
-							'<option value="1" selected>Jusqu\'à 9</option>' +
-							'<option value="2">Jusqu\'à 99</option>' +
-							'<option value="3">Jusqu\'à 999</option>' +
+							'<option value="1" selected>Grille 20x20</option>' +
+							'<option value="2">Grille aléatoire</option>' +
 						'</select>' +
 					'</li>' +
 
 					'<li class="nav-item">' +
-						'<input id="numberInput" class="form-control me-2" type="search" data-toggle="tooltip" data-placement="left" title="Entrez un nombre ou une unité de numération (u, c, *d)" >' +
-					'</li>' +
+						    '<input id="numberInput" class="form-control me-2" type="number" data-toggle="tooltip" data-placement="left" title="Entrez un entier" >' +
+                    '</li>' +
+
+
+					'<li class="nav-item">' +
+                    '<input id="numberInput2" class="form-control me-2" type="number" data-toggle="tooltip" data-placement="left" title="Entrez un entier" >' +
+                '</li>' +
 
 					'<li class="nav-item">' +
 						'<div class="btn-group">' +
-							'<button class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Tout effacer" id="trashButton">' +
-								'<i class="fa-solid fa-trash"></i>' +
+							'<button class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Nouvelle partie" id="trashButton">' +
+								'<i class="fa-solid fa-rotate-right"></i>' +
 							'</button>' +
 							'<button class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Aide" id="helpButton">' +
 								'<i class="fa-solid fa-question"></i>' +
@@ -232,9 +219,9 @@ var html =  '<nav class="navbar fixed-bottom navbar-light bg-light">' +
 					'</li>' +
 
 					'<li class="nav-item">' +
-						'<div class="form-check form-switch custom-switch" data-placement="bottom" title="Afficher le nombre codé">' +
+						'<div class="form-check form-switch custom-switch" data-placement="bottom" title="Vérifier le résultat">' +
 							'<input id="showResultSwitch" class="form-check-input" type="checkbox" role="switch" style="transform: scale(1.8);">' +
-							'<label class="form-check-label" style="padding-left: 20px;">Afficher le nombre codé</label>' +
+							'<label class="form-check-label" style="padding-left: 20px;">Vérifier le résultat</label>' +
 						'</div>' +
 					'</li>' +
 
