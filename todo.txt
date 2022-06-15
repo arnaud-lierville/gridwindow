@@ -1,0 +1,10 @@
+TODO :
+fix : tooltips bootstrap
+push online + README
+
+TODO+ :
+12,24 ou 12.24 in input
+shorcuts p plus de colonnes, m moins de colonnes, u génération d'une carte unité, n génération d'une carte nombre
+
+WARNING :
+responsive-paper.css : canvas[resize] ?> height: 1000px; (normaly auto)
