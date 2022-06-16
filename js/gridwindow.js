@@ -2,9 +2,7 @@
 // Global variables
 var marginNavbar = 120
 var gridColor = '#91A8D0'
-var pinkColorCard = '#F0DEE4'
 var pinkStrokeColor = '#D8A9B9'
-var greenColorCard = '#DCECD3'
 var greenStrokeColor = '#88BE69'
 var simpleMultipeColor = '#F64C72'
 var doubleMultipleColor = '#7A80AB'
@@ -13,8 +11,8 @@ var strokeWidth = 3
 var nbcolumn = 30
 var people = new Group()
 var grid = new Group()
-var isPopulated = true//false
-var isMultipleColor = true//false
+var isPopulated = false
+var isMultipleColor = false
 var isResultHidden = true
 
 // Math Global variables
@@ -28,6 +26,36 @@ var firstValue = Math.floor(Math.random() * 200) + 1
 
 // when view is resized...
 paper.view.onResize = function() { drawApp(isPopulated, isMultipleColor) }
+
+/* utils */
+var logging = function() {
+    console.log('----------------------------------------------------------------------------')
+    console.log('La taille de la grille complète est : ' + gridSize)
+    console.log('Valeur de a recherchée : ' + a)
+    console.log('Valeur de b recherchée : ' + b)
+    console.log('La fenêtre se remplit à partir de : ' + firstValue)
+    var artascii = 
+    '     ________       __     ___  __      __ __             ___             \n' +
+    '    /  _____/______|__| __| _/ /  \\    /  \\__| ____    __| _/______  _  __\n' +
+    '   /   \\  __\\_  __ \\  |/ __ |  \\   \\/\\/   /  |/    \\  / __ |/  _ \\ \\/ \\/ /\n' +
+    '   \\    \\_\\  \\  | \\/  / /_/ |   \\        /|  |   |  \\/ /_/ (  <_> )     / \n' +
+    '    \\______  /__|  |__\\____ |    \\__/\\  / |__|___|  /\\____ |\\____/ \\/\\_/  \n' +
+    '           \\/              \\/         \\/          \\/      \\/              \n'
+    console.log()
+    console.log(artascii)
+}
+
+var displayResult = function() {
+    if(isResultHidden) { 
+        resultDisplay.innerHTML = '?'
+    } else {
+        if((numberInput.value == a && numberInput2.value == b) || (numberInput.value == b && numberInput2.value == a)) { 
+            resultDisplay.innerHTML = 'Gagné !'
+        } else {
+            resultDisplay.innerHTML = 'Perdu !'
+        }
+    }
+}
 
 /* Html scene */
 var html =  '<nav class="navbar fixed-bottom navbar-light bg-light">' +
@@ -114,25 +142,11 @@ var redoButton = document.getElementById('redoButton')
 var helpButton = document.getElementById('helpButton')
 var resultDisplay = document.getElementById('resultDisplay')
 
-// TO KILL
-numberInput.value = a
-numberInput2.value = b
-
 var helpModal = new bootstrap.Modal(document.getElementById('helpModal'), { keyboard: false })
 
-
 showResultSwitch.addEventListener('change', function() {
-    if(!isResultHidden) { 
-        resultDisplay.innerHTML = '?'
-    } else {
-        if((numberInput.value == a && numberInput2.value == b) || (numberInput.value == b && numberInput2.value == a)) { 
-            resultDisplay.innerHTML = 'Gagné !'
-        } else {
-            resultDisplay.innerHTML = 'Perdu !'
-        }
-    }
     isResultHidden = !isResultHidden
-
+    displayResult()
 })
 showColorSwitch.addEventListener('change', function() {
     isMultipleColor = !isMultipleColor
@@ -143,11 +157,15 @@ populateSwitch.addEventListener('change', function() {
     drawApp(isPopulated, isMultipleColor)
 })
 
+numberInput.addEventListener('change', function() { displayResult() })
+numberInput2.addEventListener('change', function() { displayResult() })
+
 level.addEventListener('change', function() {
     var gridSizeToApply = 20
     if (level.value == 2) { gridSizeToApply = Math.floor(Math.random() * 10) + 11 }
     gridSize = gridSizeToApply
     firstValue = Math.floor(Math.random() * Math.pow(gridSize, 2) - 1) + 1
+    drawApp(isPopulated, isMultipleColor)
 })
 
 redoButton.onclick = function() { 
@@ -155,16 +173,11 @@ redoButton.onclick = function() {
     b = Math.floor(Math.random() * 8) + 3
     if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
 
-    // TO KILL
-    numberInput.value = a
-    numberInput2.value = b
-
     firstValue = Math.floor(Math.random() * 199) + 1
-    // TO RESTORE
-    // isPopulated = false
-    // populateSwitch.checked = false
-    // isMultipleColor = false
-    // showColorSwitch.checked = false
+    isPopulated = false
+    populateSwitch.checked = false
+    isMultipleColor = false
+    showColorSwitch.checked = false
     drawApp(isPopulated, isMultipleColor)
 }
 
@@ -174,6 +187,8 @@ helpButton.onclick = function() { helpModal.toggle() }
 
 function drawApp(isPopulated, isMultipleColor) {
     project.clear()
+
+    logging()
 
     var people = new Group()
     var grid = new Group()
@@ -205,7 +220,6 @@ function drawApp(isPopulated, isMultipleColor) {
     var value = firstValue
     for(var i = 0 ; i < n ; i++) {
         for(var j = 0 ; j < n; j++) {
-
             if(value%a == 0 || value%b == 0) {
                 var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/2 + i*squareSize)
                 var circle = new Path.Circle(point, squareSize/2.3)
@@ -222,13 +236,6 @@ function drawApp(isPopulated, isMultipleColor) {
     var value = firstValue
     for(var i = 0 ; i < n ; i++) {
         for(var j = 0 ; j < n; j++) {
-            // if(value%a != 0 && value%b != 0) {
-            // var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/2 + i*squareSize)
-            // var circle = new Path.Circle(point, squareSize/2.3)
-            // circle.fillColor = greenColorCard
-            // people.addChild(circle)
-            // }
-
             var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/1.5 + i*squareSize)
             var text = new PointText(point)
             text.justification = 'center'
