@@ -26,7 +26,7 @@ if (a == b) {
     else { b = 3 }
 }
 
-var firstValue = Math.floor(Math.random() * 8) + 3
+var firstValue = Math.floor(Math.random() * 200) + 1
 
 // when view is resized...
 paper.view.onResize = function() { drawApp(isPopulated, isMultipleColor) }
@@ -128,7 +128,7 @@ showResultSwitch.addEventListener('change', function() {
     if(!isResultHidden) { 
         resultDisplay.innerHTML = '?'
     } else {
-        if(numberInput.value == a && numberInput2.value == b) { 
+        if((numberInput.value == a && numberInput2.value == b) || (numberInput.value == b && numberInput2.value == a)) { 
             resultDisplay.innerHTML = 'Gagné !'
         } else {
             resultDisplay.innerHTML = 'Perdu !'
@@ -158,7 +158,7 @@ redoButton.onclick = function() {
     numberInput.value = a
     numberInput2.value = b
 
-    firstValue = Math.floor(Math.random() * 8) + 3
+    firstValue = Math.floor(Math.random() * 199) + 1
     // TO RESTORE
     // isPopulated = false
     // populateSwitch.checked = false
