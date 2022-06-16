@@ -18,13 +18,11 @@ var isMultipleColor = true//false
 var isResultHidden = true
 
 // Math Global variables
+var gridSize = 20
 var n = 10
 var a = Math.floor(Math.random() * 8) + 3
 var b = Math.floor(Math.random() * 8) + 3
-if (a == b) { 
-    if(a != 7) { b = Math.min(10, a + 3) } 
-    else { b = 3 }
-}
+if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
 
 var firstValue = Math.floor(Math.random() * 200) + 1
 
@@ -122,7 +120,6 @@ numberInput2.value = b
 
 var helpModal = new bootstrap.Modal(document.getElementById('helpModal'), { keyboard: false })
 
-numberInput.addEventListener('keyup', function(event) { if(event.key == 'Enter') { generateCardFromInput() } })
 
 showResultSwitch.addEventListener('change', function() {
     if(!isResultHidden) { 
@@ -146,13 +143,17 @@ populateSwitch.addEventListener('change', function() {
     drawApp(isPopulated, isMultipleColor)
 })
 
+level.addEventListener('change', function() {
+    var gridSizeToApply = 20
+    if (level.value == 2) { gridSizeToApply = Math.floor(Math.random() * 10) + 11 }
+    gridSize = gridSizeToApply
+    firstValue = Math.floor(Math.random() * Math.pow(gridSize, 2) - 1) + 1
+})
+
 redoButton.onclick = function() { 
     a = Math.floor(Math.random() * 8) + 3
     b = Math.floor(Math.random() * 8) + 3
-    if (a == b) { 
-        if(a != 7) { b = Math.min(10, a + 3) } 
-        else { b = 3 }
-    }
+    if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
 
     // TO KILL
     numberInput.value = a
@@ -207,26 +208,26 @@ function drawApp(isPopulated, isMultipleColor) {
 
             if(value%a == 0 || value%b == 0) {
                 var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/2 + i*squareSize)
-                var circle = new Path.Circle(point, squareSize/2.2)
+                var circle = new Path.Circle(point, squareSize/2.3)
                 var currentColor = simpleMultipeColor
                 if (value%a == 0 && value%b == 0 && isMultipleColor) { currentColor = doubleMultipleColor }
                 circle.fillColor = currentColor;
             }
             value += 1
         }
-        value += 10
+        value += gridSize - 10
     }
 
     // populate
     var value = firstValue
     for(var i = 0 ; i < n ; i++) {
         for(var j = 0 ; j < n; j++) {
-            if(value%a != 0 & value%b != 0) {
-            var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/2 + i*squareSize)
-            var circle = new Path.Circle(point, squareSize/2.2)
-            circle.fillColor = greenColorCard
-            people.addChild(circle)
-            }
+            // if(value%a != 0 && value%b != 0) {
+            // var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/2 + i*squareSize)
+            // var circle = new Path.Circle(point, squareSize/2.3)
+            // circle.fillColor = greenColorCard
+            // people.addChild(circle)
+            // }
 
             var point = new Point(xShift + squareSize/2 + j*squareSize, marginNavbar + squareSize/1.5 + i*squareSize)
             var text = new PointText(point)
@@ -237,7 +238,7 @@ function drawApp(isPopulated, isMultipleColor) {
             people.addChild(text)
             value += 1
         }
-        value += 10
+        value += gridSize - 10
     }
 
     people.visible = isPopulated
