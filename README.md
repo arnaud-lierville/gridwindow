@@ -1,0 +1,1 @@
+Ce jeu est une version javascript du problème arithmétique "Fenêtre sur grille" tiré de http://conifere.be/Jeux2019/Jeux.html
