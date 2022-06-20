@@ -15,26 +15,38 @@ var isPopulated = false
 var isMultipleColor = false
 var isResultHidden = true
 
-// Math Global variables
-var gridSize = 20
-var n = 10
-var a = Math.floor(Math.random() * 8) + 3
-var b = Math.floor(Math.random() * 8) + 3
-if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
-
-var maxFirstValue = gridSize*(gridSize - n) + n
-var firstValue = Math.floor(Math.random() * maxFirstValue) + 1
-
-// when view is resized...
-paper.view.onResize = function() { drawApp(isPopulated, isMultipleColor) }
-
 /* utils */
+
+// compute first value
+var computeFirstValue = function() {
+    var alpha = Math.floor(Math.random()*(gridSize - n))
+    var beta = Math.floor(Math.random()*(gridSize - n)) + 1
+    return alpha*gridSize + beta
+}
+
+// compute lower common multiple of three numbers
+function lcm(num1, num2, num3) {
+    var min = (num1 > num2) ? num1 : num2
+    min = (num3 > min) ? num3 : min
+    while (true) {
+        if (min % num1 == 0 && min % num2 == 0 && min % num3 == 0) {
+            break;
+        }
+        min++;
+    }
+    return min
+}
+
+// log in console
 var logging = function() {
+    console.clear()
     console.log('----------------------------------------------------------------------------')
     console.log('La taille de la grille complète est : ' + gridSize)
     console.log('Valeur de a recherchée : ' + a)
     console.log('Valeur de b recherchée : ' + b)
     console.log('La fenêtre se remplit à partir de : ' + firstValue)
+    //var max = (gridSize - n)*(gridSize + 1) + 1
+    //console.log('On peut extraire jusqu\'à : ' +  max)
     var artascii = 
     '     ________       __     ___  __      __ __             ___             \n' +
     '    /  _____/______|__| __| _/ /  \\    /  \\__| ____    __| _/______  _  __\n' +
@@ -47,26 +59,51 @@ var logging = function() {
 }
 
 var displayResult = function() {
+
+    var possibleFirstValueList = []
+    var lcmValue = lcm(a, b, gridSize)
+    var currentFirstValue = firstValue%lcmValue
+    possibleFirstValueList.push(currentFirstValue)
+    while(currentFirstValue + lcmValue < (gridSize - n)*(gridSize + 1) + 1) {
+        currentFirstValue += lcmValue
+        possibleFirstValueList.push(currentFirstValue)
+    }
+
     if(isResultHidden) { 
         resultDisplay.innerHTML = '?'
     } else {
         var answer = 'Perdu !'
 
         var inputABTest = (numberInput.value == a && numberInput2.value == b) || (numberInput.value == b && numberInput2.value == a)
-        var inputFirstTest = numberInput3.value == firstValue
+        var inputFirstTest = (numberInput3.value - firstValue)%lcm(a, b, gridSize) == 0
         if(inputABTest && !inputFirstTest) { 
-            answer = 'Gagné pour les deux entiers ! Reste à trouver la première case.'
+            answer = 'Gagné pour les deux entiers ! Reste à trouver un départ possible en haut à gauche.'
         }
         if(inputABTest && inputFirstTest) { 
-            answer = 'Tout est parfait !'
+            if(possibleFirstValueList.length == 1) {
+                answer = 'Tout est parfait ! (un seule valeur possible pour la case en haut à gauche)'
+            } else {
+                answer = 'Tout est parfait ! Valeurs possibles pour la case en haut à gauche : ' + possibleFirstValueList
+            }
         }
         if(!inputABTest && inputFirstTest) { 
             answer = 'Gagné pour la première case ! Reste à trouver les deux entiers. Un moins un des deux est incorrect.'
         }
-
         resultDisplay.innerHTML = answer
     }
 }
+
+// Math Global variables
+var gridSize = 20
+var n = 10
+var a = Math.floor(Math.random() * 8) + 3
+var b = Math.floor(Math.random() * 8) + 3
+if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
+
+var firstValue = computeFirstValue()
+
+// when view is resized...
+paper.view.onResize = function() { drawApp(isPopulated, isMultipleColor) }
 
 /* Html scene */
 var html =  '<nav class="navbar fixed-bottom navbar-light bg-light">' +
@@ -181,7 +218,7 @@ level.addEventListener('change', function() {
     if (level.value == 2) { gridSizeToApply = Math.floor(Math.random() * 10) + 11 }
     gridSize = gridSizeToApply
     maxFirstValue = gridSize*(gridSize - n) + n
-    firstValue = Math.floor(Math.random() * maxFirstValue) + 1
+    firstValue =  computeFirstValue()
     drawApp(isPopulated, isMultipleColor)
 })
 
@@ -190,11 +227,16 @@ redoButton.onclick = function() {
     b = Math.floor(Math.random() * 8) + 3
     if (a == b) { if(a < 7) { b = a + 3 } else { b = 3 } }
 
-    firstValue = Math.floor(Math.random() * 199) + 1
+    firstValue = computeFirstValue()
     isPopulated = false
     populateSwitch.checked = false
     isMultipleColor = false
     showColorSwitch.checked = false
+    isResultHidden = true
+    numberInput.value = ''
+    numberInput2.value = ''
+    numberInput3.value = ''
+    displayResult()
     drawApp(isPopulated, isMultipleColor)
 }
 
