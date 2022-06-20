@@ -172,7 +172,6 @@ var html =  '<nav class="navbar fixed-bottom navbar-light bg-light">' +
 						'</div>' +
 					'</li>' +
 
-
 				'</ul>' +
 			'</div>' +
 		  '</nav>'
